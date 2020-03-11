@@ -10,6 +10,7 @@ data class Store(val data: ArrayList<Data>, val meta: Meta): Parcelable
 data class Data(val id: String,
                 val type: String,
                 val attributes: Attribute
+//                val relationships: Relationships
 ): Parcelable
 
 @Parcelize
@@ -29,6 +30,11 @@ data class Attribute(val id: Int,
                      val updatedAt : String,
                      val logoUrl : String,
                      val coverUrl : String): Parcelable
+
+//@Parcelize
+//data class Relationships(val product : ArrayList<Data>
+//
+//): Parcelable
 
 @Parcelize
 data class Meta(val pagination: Pagination): Parcelable
