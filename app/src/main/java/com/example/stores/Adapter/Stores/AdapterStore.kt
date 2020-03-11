@@ -41,7 +41,7 @@ class AdapterStore(val stores: ArrayList<Data>, var clickListner: onStoresItemCl
         }
 
         override fun onClick(view: View) {
-            Toast.makeText(view.context, "${store.attributes.name} Diklik", Toast.LENGTH_SHORT)
+            Toast.makeText(view.context, "${store.attributes.name}", Toast.LENGTH_SHORT)
                 .show()
         }
 
@@ -49,12 +49,12 @@ class AdapterStore(val stores: ArrayList<Data>, var clickListner: onStoresItemCl
             this.store = store
 //            if (store.attributes.logoUrl) {
                 GlideApp.with(view.context)
-                    .load(store.attributes.logoUrl!!)
+                    .load(store.attributes.logoUrl)
 //                    .placeholder(R.drawable.noimage)
 //                    .circleCrop()
                     .into(view.ivLogo)
             GlideApp.with(view.context)
-                .load(store.attributes.coverUrl!!)
+                .load(store.attributes.coverUrl)
 //                    .placeholder(R.drawable.noimage)
 //                    .circleCrop()
                 .into(view.ivCover)

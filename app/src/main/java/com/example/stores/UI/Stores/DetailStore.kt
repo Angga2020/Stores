@@ -1,8 +1,10 @@
 package com.example.stores.UI.Stores
 
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.Window
 import android.widget.TextView
 import android.widget.Toast
@@ -28,6 +30,12 @@ class DetailStore : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.detail_store)
+
+        // set title pada action bar.
+        supportActionBar?.title = R.string.detail_name.toString()
+        // manampilkan tombol back pada action bar.
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         val store : Data = intent.getParcelableExtra("store")
 
 
@@ -68,13 +76,16 @@ class DetailStore : AppCompatActivity() {
         txt = myDialog.findViewById(R.id.tvbYes) as TextView
         txt.isEnabled = true
         txt.setOnClickListener{
+            val loading = ProgressDialog(this)
+            loading.setMessage( R.string.loading_message.toString())
+            loading.show()
             val apiInterface : StoreApi = ApiClient.getClient().create(StoreApi::class.java)
             apiInterface.deleteStore(store.attributes.id)
                 .enqueue(object : Callback<Store> {
 
                     override fun onResponse(call: Call<Store>, response: Response<Store>) {
                         if (response.isSuccessful) {
-                            Toast.makeText(this@DetailStore,"Product was successfully deleted",
+                            Toast.makeText(this@DetailStore,R.string.product_deleted,
                                 Toast.LENGTH_LONG).show()
                             val intent = Intent(this@DetailStore, MainActivity::class.java)
                             startActivity(intent)
@@ -82,6 +93,8 @@ class DetailStore : AppCompatActivity() {
                         else {
                             Toast.makeText(this@DetailStore, response.message(), Toast.LENGTH_LONG).show()
                         }
+                        // dismiss progress dialog
+                        loading.dismiss()
                     }
                     override fun onFailure(call: Call<Store>, t: Throwable) = t.printStackTrace()
 
@@ -96,5 +109,15 @@ class DetailStore : AppCompatActivity() {
             myDialog.cancel()
         }
         myDialog.show()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            android.R.id.home->{
+                this.finish()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }
